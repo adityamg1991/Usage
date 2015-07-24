@@ -23,7 +23,6 @@
         android:visibility="gone"
         android:textSize="18sp"
         android:lineSpacingMultiplier="1.5"
-        android:text="@string/no_app_found"
         android:layout_height="wrap_content"/>
 
 </RelativeLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,8 +95,8 @@ public class SingleAppUsageInfoFragment extends Fragment implements View.OnClick
         AppUsageFrequencyTableItem item = list.get(0);
 
         long frequency = item.getFrequency();
-        String lastUsed = item.getLastUsed();
-        String firstUsed = item.getFirstUsed();
+        long lastUsed = item.getLastUsed();
+        long firstUsed = item.getFirstUsed();
         double avgUsageTime = item.getAverageUseTime();
         double totalTime = item.getTotalUseTime();
         String appLabel = item.getLabel();
@@ -107,8 +108,7 @@ public class SingleAppUsageInfoFragment extends Fragment implements View.OnClick
         tvTotalTimeUsed.setText(formattedTotalUsage);
 
         try {
-            long longLastUsed = Long.parseLong(lastUsed);
-            String lastTimeUsed = UsageApplication.getFormattedTime(longLastUsed);
+            String lastTimeUsed = UsageApplication.getFormattedTime(lastUsed);
             tvLastUsed.setText(lastTimeUsed);
         } catch(Exception e) {
             e.printStackTrace();
@@ -118,8 +118,11 @@ public class SingleAppUsageInfoFragment extends Fragment implements View.OnClick
         tvAverageDuration.setText(strAverageTime);
 
         try {
-            Date initialDate = new Date(Long.parseLong(firstUsed));
-            Date lastDate = new Date(Long.parseLong(lastUsed));
+            Date initialDate = new Date(firstUsed);
+            Date lastDate = new Date(lastUsed);
+
+            Log.d(TAG, "FIRST_USE_DATE : " + initialDate.toString());
+            Log.d(TAG, "LAST_USE_DATE : " + lastDate.toString());
 
             long diff = lastDate.getTime() - initialDate.getTime();
             long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);

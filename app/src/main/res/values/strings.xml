@@ -7,7 +7,7 @@
     <string name="please_wait">Please Wait ...</string>
     <string name="open_app_usage_activity">App usage pattern</string>
     <string name="title_activity_app_usage_pattern">Usage Pattern</string>
-    <string name="no_app_found">No apps found ... \nSpend some time with your device, open some apps while we prepare your analytics for you.</string>
+    <string name="no_used_app_found">No apps found ... \nSpend some time with your device, open some apps while we prepare your analytics for you.</string>
     <string name="open_memory_usage_activity">Show memory usage</string>
     <string name="open_battery_usage_activity">Show battery usage</string>
 
@@ -20,4 +20,5 @@
     <string name="your_app_usage">Your App Usage</string>
     <string name="title_activity_single_app_usage_info">SingleAppUsageInfoActivity</string>
     <string name="open_futile_apps">Show apps not used in a while</string>
+    <string name="no_unused_app_found">Woah, no apps found that you have not used in a while.\nYou do use all your apps !</string>
 </resources>

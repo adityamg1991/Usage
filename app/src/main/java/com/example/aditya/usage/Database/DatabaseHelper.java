@@ -125,11 +125,13 @@ public class DatabaseHelper {
     public Cursor getAppsNotUsedInTime(long timeInMillis) {
 
         Cursor cursor = null;
+        long timeBefore = System.currentTimeMillis();
+        timeBefore -= timeInMillis;
 
-        String sql = "SELECT * FROM " + AppUsageFrequencyTable.TABLE_NAME + " WHERE " ;
-
-
-
+        String sql = "SELECT * FROM " + AppUsageFrequencyTable.TABLE_NAME +
+                " WHERE " + AppUsageFrequencyTable.LAST_USED + " < " + timeBefore;
+        log(sql);
+        cursor = database.rawQuery(sql, null);
 
         return cursor;
     }

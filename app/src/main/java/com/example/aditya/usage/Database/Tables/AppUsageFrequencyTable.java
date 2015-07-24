@@ -16,7 +16,7 @@ public class AppUsageFrequencyTable {
     public static final String PACKAGE_NAME = "package_name";
     // How many times user has opened the app
     public static final String FREQUENCY = "frequency";
-    // When did user last opened the app (String in database)
+    // When did user last opened the app (In millis)
     public static final String LAST_USED = "last_used";
     // Average time user spends in the app
     public static final String AVG_USAGE_TIME = "avg_user_time";
@@ -28,7 +28,7 @@ public class AppUsageFrequencyTable {
     // Create table command
     public static final String CREATE_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
             " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " + LABEL + " TEXT, " +
-            PACKAGE_NAME + " Text, " + FREQUENCY + " INTEGER, " + LAST_USED + " TEXT, " +
-            AVG_USAGE_TIME + " REAL, " + TOTAL_TIME + " REAL, " + FIRST_USED + " TEXT )";
+            PACKAGE_NAME + " Text, " + FREQUENCY + " INTEGER, " + LAST_USED + " INTEGER, " +
+            AVG_USAGE_TIME + " REAL, " + TOTAL_TIME + " REAL, " + FIRST_USED + " INTEGER )";
 
 }

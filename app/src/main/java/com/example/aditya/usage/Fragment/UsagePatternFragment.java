@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.aditya.usage.Adapter.AppUsagePatternAdapter;
 import com.example.aditya.usage.Database.DatabaseHelper;
@@ -20,6 +21,8 @@ import com.example.aditya.usage.Utilities.Constants;
 public class UsagePatternFragment extends Fragment {
 
     ListView lvAppUsagePattern;
+    TextView tvNoData;
+    DatabaseHelper dbHelper;
 
     @Nullable
     @Override
@@ -32,24 +35,33 @@ public class UsagePatternFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        dbHelper = DatabaseHelper.getInstance(getActivity());
         lvAppUsagePattern = (ListView) getActivity().findViewById(R.id.lv_app_usage);
+        tvNoData = (TextView) getActivity().findViewById(R.id.tv_no_apps_found);
 
         Bundle bundle = getArguments();
+
+        Cursor cursor = null;
 
         if( bundle != null && bundle.containsKey(Constants.KEY_SHOW_FUTILE_APPS)
                 && bundle.getString(Constants.KEY_SHOW_FUTILE_APPS).equals(Constants.VALUE_SHOW_FUTILE_APPS)) {
 
-
+            // Apps not used in 4 days
+            cursor = dbHelper.getAppsNotUsedInTime(4 * 86400 * 1000);
+            if(0 == cursor.getCount()) {
+                tvNoData.setVisibility(View.VISIBLE);
+                tvNoData.setText(getActivity().getResources().getString(R.string.no_unused_app_found));
+            }
         } else {
 
-            Cursor cursor = DatabaseHelper.getInstance(getActivity()).getAppUsageCursor();
-
+            cursor = dbHelper.getAppUsageCursor();
             if(0 == cursor.getCount()) {
-                getActivity().findViewById(R.id.tv_no_apps_found).setVisibility(View.VISIBLE);
-            } else {
-                AppUsagePatternAdapter adapter = new AppUsagePatternAdapter(getActivity(), cursor, true);
-                lvAppUsagePattern.setAdapter(adapter);
+                tvNoData.setVisibility(View.VISIBLE);
+                tvNoData.setText(getActivity().getResources().getString(R.string.no_used_app_found));
             }
         }
+
+        AppUsagePatternAdapter adapter = new AppUsagePatternAdapter(getActivity(), cursor, true);
+        lvAppUsagePattern.setAdapter(adapter);
     }
 }

@@ -73,12 +73,14 @@ public class UsageApplication extends Application {
             AppUsageFrequencyTableItem item = new AppUsageFrequencyTableItem();
 
             long frequency = cursor.getLong(cursor.getColumnIndex(AppUsageFrequencyTable.FREQUENCY));
-            String lastUsed = cursor.getString(cursor.getColumnIndex(AppUsageFrequencyTable.LAST_USED));
-            String firstUsed = cursor.getString(cursor.getColumnIndex(AppUsageFrequencyTable.FIRST_USED));
+            long lastUsed = cursor.getLong(cursor.getColumnIndex(AppUsageFrequencyTable.LAST_USED));
+            long firstUsed = cursor.getLong(cursor.getColumnIndex(AppUsageFrequencyTable.FIRST_USED));
+
             double avgUsageTime = cursor.getDouble(cursor.getColumnIndex(AppUsageFrequencyTable.AVG_USAGE_TIME));
             double totalTime = cursor.getDouble(cursor.getColumnIndex(AppUsageFrequencyTable.TOTAL_TIME));
-            String appLabel = cursor.getString(cursor.getColumnIndex(AppUsageFrequencyTable.LABEL));
 
+            String appLabel = cursor.getString(cursor.getColumnIndex(AppUsageFrequencyTable.LABEL));
+            String packageName = cursor.getString(cursor.getColumnIndex(AppUsageFrequencyTable.PACKAGE_NAME));
 
             item.setLabel(appLabel);
             item.setAverageUseTime(avgUsageTime);
@@ -86,6 +88,7 @@ public class UsageApplication extends Application {
             item.setFrequency(frequency);
             item.setLastUsed(lastUsed);
             item.setTotalUseTime(totalTime);
+            item.setPackageName(packageName);
 
             data.add(item);
         }

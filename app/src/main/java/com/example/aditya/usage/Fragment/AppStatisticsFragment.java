@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.aditya.usage.Activity.SingleAppUsageInfoActivity;
+import com.example.aditya.usage.Database.Data.AppUsageFrequencyTableItem;
 import com.example.aditya.usage.Database.DatabaseHelper;
 import com.example.aditya.usage.Database.Tables.AppUsageFrequencyTable;
 import com.example.aditya.usage.R;
@@ -29,6 +30,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -148,19 +150,18 @@ public class AppStatisticsFragment extends Fragment {
     private void populatePieChart() {
 
         ArrayList<PieChartDataItem> data = new ArrayList<PieChartDataItem>();
-
         Cursor cursor = dbHelper.getAppUsageCursor();
 
-        for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+        ArrayList<AppUsageFrequencyTableItem> dataList = UsageApplication.getAppUsageFrequencyTableData(cursor);
 
-            String label = cursor.getString(cursor.getColumnIndex(AppUsageFrequencyTable.LABEL));
-            String packageName = cursor.getString(cursor.getColumnIndex(AppUsageFrequencyTable.PACKAGE_NAME));
-            double totalTime = cursor.getDouble(cursor.getColumnIndex(AppUsageFrequencyTable.TOTAL_TIME));
+        for(int i=0; i<dataList.size(); i++) {
+
+            AppUsageFrequencyTableItem row = dataList.get(i);
 
             PieChartDataItem item = new PieChartDataItem();
-            item.label = label;
-            item.packageName = packageName;
-            item.totalTime = totalTime;
+            item.label = row.getLabel();
+            item.packageName = row.getPackageName();
+            item.totalTime = row.getTotalUseTime();
 
             data.add(item);
         }

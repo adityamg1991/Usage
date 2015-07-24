@@ -5,23 +5,25 @@ package com.example.aditya.usage.Database.Data;
  */
 public class AppUsageFrequencyTableItem {
 
-    private String label, package_name, firstUsed, lastUsed;
-    double averageUseTime, totalUseTime;
-    long frequency;
+    private String label, package_name;
+    private double averageUseTime, totalUseTime;
+    private long frequency;
+    private long lastUsed;
+    private long firstUsed;
 
-    public String getFirstUsed() {
+    public long getFirstUsed() {
         return firstUsed;
     }
 
-    public void setFirstUsed(String firstUsed) {
+    public void setFirstUsed(long firstUsed) {
         this.firstUsed = firstUsed;
     }
 
-    public String getLastUsed() {
+    public long getLastUsed() {
         return lastUsed;
     }
 
-    public void setLastUsed(String lastUsed) {
+    public void setLastUsed(long lastUsed) {
         this.lastUsed = lastUsed;
     }
 
