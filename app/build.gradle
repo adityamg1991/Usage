@@ -1,0 +1,38 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
+
+    repositories {
+        maven { url "https://jitpack.io" }
+    }
+
+    defaultConfig {
+        applicationId "com.example.aditya.usage"
+        minSdkVersion 15
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.android.support:cardview-v7:21.0.+'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.1.0'
+    compile 'com.afollestad:material-dialogs:0.7.6.0'
+}

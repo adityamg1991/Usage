@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Usage</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="loading">Loading</string>
+    <string name="please_wait">Please Wait ...</string>
+    <string name="open_app_usage_activity">App usage pattern</string>
+    <string name="title_activity_app_usage_pattern">Usage Pattern</string>
+    <string name="no_app_found">No apps found ... \nSpend some time with your device, open some apps while we prepare your analytics for you.</string>
+    <string name="open_memory_usage_activity">Show memory usage</string>
+    <string name="open_battery_usage_activity">Show battery usage</string>
+
+
+    <color name="app_theme_blue">#4682B4</color>
+    <string name="title_activity_memory_usage">MemoryUsageActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="your_app_usage">Your App Usage</string>
+    <string name="title_activity_single_app_usage_info">SingleAppUsageInfoActivity</string>
+    <string name="open_futile_apps">Show apps not used in a while</string>
+</resources>
