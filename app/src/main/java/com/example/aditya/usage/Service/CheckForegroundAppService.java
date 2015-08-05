@@ -9,12 +9,10 @@ import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.example.aditya.usage.Database.Data.AppUsageFrequencyTableItem;
+import com.example.aditya.usage.Data.AppUsageFrequencyTableItem;
 import com.example.aditya.usage.Data.LastOpenedApp;
 import com.example.aditya.usage.Database.DatabaseHelper;
-import com.example.aditya.usage.Receivers.RebootReceiver;
 import com.example.aditya.usage.Utilities.Constants;
 import com.example.aditya.usage.Utilities.UsageApplication;
 

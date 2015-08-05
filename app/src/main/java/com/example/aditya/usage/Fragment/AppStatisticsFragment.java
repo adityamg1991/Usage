@@ -2,27 +2,22 @@ package com.example.aditya.usage.Fragment;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.example.aditya.usage.Activity.SingleAppUsageInfoActivity;
-import com.example.aditya.usage.Database.Data.AppUsageFrequencyTableItem;
+import com.example.aditya.usage.Data.AppUsageFrequencyTableItem;
 import com.example.aditya.usage.Database.DatabaseHelper;
-import com.example.aditya.usage.Database.Tables.AppUsageFrequencyTable;
 import com.example.aditya.usage.R;
 import com.example.aditya.usage.Utilities.Constants;
 import com.example.aditya.usage.Utilities.UsageApplication;
-import com.github.mikephil.charting.charts.Chart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.DataSet;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
@@ -30,16 +25,14 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.Highlight;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 
-public class AppStatisticsFragment extends Fragment {
+public class AppStatisticsFragment extends UsageBaseFragment {
 
     private PieChart pieChart;
     private DatabaseHelper dbHelper;
@@ -100,15 +93,6 @@ public class AppStatisticsFragment extends Fragment {
         } else {
             showListOfApps(map);
         }
-    }
-
-
-    private void startSingleAppInfoActivity(String pck, String label) {
-
-        Intent i = new Intent(getActivity(), SingleAppUsageInfoActivity.class);
-        i.putExtra(Constants.PCK_NAME, pck);
-        i.putExtra(Constants.APP_LABEL, label);
-        startActivity(i);
     }
 
 

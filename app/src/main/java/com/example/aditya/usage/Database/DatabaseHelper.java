@@ -7,13 +7,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.example.aditya.usage.Database.Data.AppUsageFrequencyTableItem;
+import com.example.aditya.usage.Data.AppUsageFrequencyTableItem;
+import com.example.aditya.usage.Data.PhoneFactItem;
 import com.example.aditya.usage.Database.Tables.AppUsageFrequencyTable;
 import com.example.aditya.usage.Database.Tables.PastAppData;
 import com.example.aditya.usage.Utilities.Constants;
 
 import org.json.JSONArray;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -137,6 +139,8 @@ public class DatabaseHelper {
     }
 
 
+
+
     public void clearAppUsageTable() {
         String query = "DELETE FROM " + AppUsageFrequencyTable.TABLE_NAME;
         log(query);
@@ -235,5 +239,22 @@ public class DatabaseHelper {
 
     private static void log(String query) {
         Log.d(TAG, query);
+    }
+
+
+    private ArrayList<PhoneFactItem> getPhoneFacts() {
+
+        ArrayList<PhoneFactItem> list = null;
+
+        String query = "SELECT * FROM " + AppUsageFrequencyTable.TABLE_NAME
+                + " ORDER BY " + AppUsageFrequencyTable.TOTAL_TIME + " DESC LIMIT 1";
+        log(query);
+
+
+
+
+
+
+        return list;
     }
 }

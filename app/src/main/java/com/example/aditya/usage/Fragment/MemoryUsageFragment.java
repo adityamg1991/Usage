@@ -1,11 +1,8 @@
 package com.example.aditya.usage.Fragment;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +22,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by aditya on 10/07/15.
  */
-public class MemoryUsageFragment extends Fragment {
+public class MemoryUsageFragment extends UsageBaseFragment {
 
     private ListView lvProcesses;
     private ProcessAdapter adapterProcess;
@@ -71,7 +68,7 @@ public class MemoryUsageFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ProcessData unit = data.get(position);
-                openAppSettings(unit.getPackageName());
+                startSingleAppInfoActivity(unit.getPackageName(), unit.getAppLabel());
             }
         });
     }
@@ -110,22 +107,5 @@ public class MemoryUsageFragment extends Fragment {
 
         processAdapter.notifyDataSetChanged();
         getActivity().findViewById(R.id.pb_memory_usage).setVisibility(View.GONE);
-    }
-
-
-    private void openAppSettings(String packageName) {
-
-        try {
-            //Open the specific App Info page:
-            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-            intent.setData(Uri.parse("package:" + packageName));
-            startActivity(intent);
-
-        } catch ( ActivityNotFoundException e ) {
-            e.printStackTrace();
-            //Open the generic Apps page:
-            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
-            startActivity(intent);
-        }
     }
 }

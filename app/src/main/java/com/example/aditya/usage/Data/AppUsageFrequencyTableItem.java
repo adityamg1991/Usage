@@ -1,4 +1,4 @@
-package com.example.aditya.usage.Database.Data;
+package com.example.aditya.usage.Data;
 
 /**
  * Created by aditya on 06/07/15.

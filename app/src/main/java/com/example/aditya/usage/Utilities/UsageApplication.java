@@ -3,6 +3,8 @@ package com.example.aditya.usage.Utilities;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
@@ -13,9 +15,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.util.Log;
 
-import com.example.aditya.usage.Database.Data.AppUsageFrequencyTableItem;
+import com.example.aditya.usage.Data.AppUsageFrequencyTableItem;
 import com.example.aditya.usage.Database.Tables.AppUsageFrequencyTable;
 import com.example.aditya.usage.Service.CheckForegroundAppService;
 
@@ -24,6 +27,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by aditya on 01/07/15.
@@ -216,5 +220,39 @@ public class UsageApplication extends Application {
         decimalFormat.setGroupingUsed(false);
         decimalFormat.setDecimalSeparatorAlwaysShown(false);
         return decimalFormat.format(dubbu);
+    }
+
+    public static String getDefaultDialerPackage() {
+
+        String str = null;
+
+        if(null != managerPackage) {
+
+            Intent i = new Intent(Intent.ACTION_CALL);
+            i.setData(Uri.parse("tel:123456789"));
+            ResolveInfo resolveInfo = managerPackage.resolveActivity(i, 0);
+            if (resolveInfo != null) {
+
+                ActivityInfo activityInfo = resolveInfo.activityInfo;
+                if (activityInfo != null) {
+                    if ("android".equals(activityInfo.packageName)) {
+
+                        // No default activity. Choosing the first entry.
+                        List<ResolveInfo> resolveInfos = managerPackage.queryIntentActivities(i, 0);
+                        for (ResolveInfo rInfo : resolveInfos) {
+                            ApplicationInfo appInfo = rInfo.activityInfo.applicationInfo;
+                            str = appInfo.packageName;
+                            break;
+                        }
+                    } else {
+                        ApplicationInfo appInfo = activityInfo.applicationInfo;
+                        if (appInfo != null) {
+                            str = appInfo.packageName;
+                        }
+                    }
+                }
+            }
+        }
+        return str;
     }
 }

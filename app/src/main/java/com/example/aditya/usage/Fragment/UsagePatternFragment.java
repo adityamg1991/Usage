@@ -3,7 +3,9 @@ package com.example.aditya.usage.Fragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +20,20 @@ import com.example.aditya.usage.Utilities.Constants;
 /**
  * Created by aditya on 10/07/15.
  */
-public class UsagePatternFragment extends Fragment {
+public class UsagePatternFragment extends UsageBaseFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     ListView lvAppUsagePattern;
     TextView tvNoData;
     DatabaseHelper dbHelper;
+
+    private static final int LOADER_ID = 0;
+    private boolean isShowingFutileApps;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -40,28 +51,50 @@ public class UsagePatternFragment extends Fragment {
         tvNoData = (TextView) getActivity().findViewById(R.id.tv_no_apps_found);
 
         Bundle bundle = getArguments();
+        getLoaderManager().initLoader(LOADER_ID, bundle, this);
+    }
 
-        Cursor cursor = null;
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, final Bundle bundle) {
 
-        if( bundle != null && bundle.containsKey(Constants.KEY_SHOW_FUTILE_APPS)
-                && bundle.getString(Constants.KEY_SHOW_FUTILE_APPS).equals(Constants.VALUE_SHOW_FUTILE_APPS)) {
+        return new CursorLoader(getActivity()) {
+            @Override
+            public Cursor loadInBackground() {
 
-            // Apps not used in 4 days
-            cursor = dbHelper.getAppsNotUsedInTime(4 * 86400 * 1000);
-            if(0 == cursor.getCount()) {
+                Cursor cursor;
+
+                if( bundle != null && bundle.containsKey(Constants.KEY_SHOW_FUTILE_APPS)
+                        && bundle.getString(Constants.KEY_SHOW_FUTILE_APPS).equals(Constants.VALUE_SHOW_FUTILE_APPS)) {
+                    // Apps not used in 4 days
+                    cursor = dbHelper.getAppsNotUsedInTime(4 * 86400 * 1000);
+                    isShowingFutileApps = true;
+                } else {
+
+                    cursor = dbHelper.getAppUsageCursor();
+                    isShowingFutileApps = false;
+                }
+                return cursor;
+            }
+        };
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        AppUsagePatternAdapter adapter = new AppUsagePatternAdapter(getActivity(), data, true);
+        lvAppUsagePattern.setAdapter(adapter);
+
+        if(0 == data.getCount()) {
+
+            if(isShowingFutileApps) {
                 tvNoData.setVisibility(View.VISIBLE);
                 tvNoData.setText(getActivity().getResources().getString(R.string.no_unused_app_found));
-            }
-        } else {
-
-            cursor = dbHelper.getAppUsageCursor();
-            if(0 == cursor.getCount()) {
+            } else {
                 tvNoData.setVisibility(View.VISIBLE);
                 tvNoData.setText(getActivity().getResources().getString(R.string.no_used_app_found));
             }
         }
-
-        AppUsagePatternAdapter adapter = new AppUsagePatternAdapter(getActivity(), cursor, true);
-        lvAppUsagePattern.setAdapter(adapter);
     }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {}
 }

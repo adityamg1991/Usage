@@ -83,9 +83,9 @@ public class ProcessAdapter extends ArrayAdapter<ProcessData> {
 
             ProcessData unitProcessData =  data.get(position);
 
-            String appName = unitProcessData.getAppName();
+            String appName = unitProcessData.getAppLabel();
             if(!TextUtils.isEmpty(appName)) {
-                holder.tvProcessName.setText(unitProcessData.getAppName());
+                holder.tvProcessName.setText(unitProcessData.getAppLabel());
             } else {
                 holder.tvProcessName.setText(unitProcessData.getPackageName());
             }

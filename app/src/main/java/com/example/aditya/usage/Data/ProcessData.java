@@ -13,6 +13,7 @@ public class ProcessData {
     private Drawable iconDrawable;
     private boolean isSystemApp;
     private boolean isUnknown;
+    private String appLabel;
 
     public boolean isUnknown() {
         return isUnknown;
@@ -30,15 +31,13 @@ public class ProcessData {
         this.isSystemApp = isSystemApp;
     }
 
-    public String getAppName() {
-        return appName;
+    public String getAppLabel() {
+        return appLabel;
     }
 
-    public void setAppName(String appName) {
-        this.appName = appName;
+    public void setAppLabel(String appLabel) {
+        this.appLabel = appLabel;
     }
-
-    private String appName;
 
     public int getProcessId() {
         return processId;

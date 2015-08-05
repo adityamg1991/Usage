@@ -1,16 +1,13 @@
 package com.example.aditya.usage.Activity;
 
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v4.app.FragmentManager;
 
 import com.example.aditya.usage.Fragment.SingleAppUsageInfoFragment;
 import com.example.aditya.usage.R;
 import com.example.aditya.usage.Utilities.Constants;
 
-public class SingleAppUsageInfoActivity extends BaseActivity {
+public class SingleAppUsageInfoActivity extends ToolBarBaseActivity {
 
     private final String FRAG_TAG = "frag_tag";
 
@@ -21,13 +18,14 @@ public class SingleAppUsageInfoActivity extends BaseActivity {
 
         String packageName = getIntent().getStringExtra(Constants.PCK_NAME);
         String appLabel = getIntent().getStringExtra(Constants.APP_LABEL);
-        initActionBar(CODE_BACK_ENABLED, appLabel);
+
+        initialiseToolbar(appLabel);
 
         FragmentManager manager = getSupportFragmentManager();
         if(null == manager.findFragmentByTag(FRAG_TAG)) {
 
             SingleAppUsageInfoFragment fragment = SingleAppUsageInfoFragment.newInstance(packageName);
-            manager.beginTransaction().add(android.R.id.content, fragment, FRAG_TAG).commit();
+            manager.beginTransaction().add(R.id.ll_container, fragment, FRAG_TAG).commit();
         }
     }
 }

@@ -120,7 +120,7 @@ public class ProcessDataUpdateService extends Service {
 
                     // App has a name
                     unitProcessData.setIsUnknown(false);
-                    unitProcessData.setAppName((String) managerPackage.getApplicationLabel(appInfo));
+                    unitProcessData.setAppLabel((String) managerPackage.getApplicationLabel(appInfo));
                     if(isUserApp(appInfo)) {
                         unitProcessData.setIsSystemApp(false);
                     } else {

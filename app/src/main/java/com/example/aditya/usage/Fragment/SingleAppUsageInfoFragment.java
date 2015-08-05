@@ -1,21 +1,29 @@
 package com.example.aditya.usage.Fragment;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.aditya.usage.Database.Data.AppUsageFrequencyTableItem;
+import com.example.aditya.usage.Data.AppUsageFrequencyTableItem;
 import com.example.aditya.usage.Database.DatabaseHelper;
-import com.example.aditya.usage.Database.Tables.AppUsageFrequencyTable;
 import com.example.aditya.usage.R;
 import com.example.aditya.usage.Utilities.Constants;
 import com.example.aditya.usage.Utilities.UsageApplication;
@@ -35,9 +43,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class SingleAppUsageInfoFragment extends Fragment implements View.OnClickListener{
 
-    DatabaseHelper dbHelper;
+    private DatabaseHelper dbHelper;
     private static final String TAG = "SingleAppUsageInfo";
-
+    private String packageName;
     private TextView tvTotalTimeUsed, tvLastUsed, tvAverageDailyUsage, tvAverageDuration;
 
     public SingleAppUsageInfoFragment(){}
@@ -61,6 +69,12 @@ public class SingleAppUsageInfoFragment extends Fragment implements View.OnClick
 
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         dbHelper = DatabaseHelper.getInstance(getActivity());
@@ -77,18 +91,28 @@ public class SingleAppUsageInfoFragment extends Fragment implements View.OnClick
         tvAverageDuration = (TextView) getActivity().findViewById(R.id.tv_avg_use_duration);
 
 
-        String packageName = getArguments().getString(Constants.PCK_NAME);
-        if(null == packageName) {
+        packageName = getArguments().getString(Constants.PCK_NAME);
+        if(TextUtils.isEmpty(packageName)) {
+            Toast.makeText(getActivity(), "Package name not found", Toast.LENGTH_SHORT).show();
             getActivity().finish();
-            Toast.makeText(getActivity(), "Some error occurred", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        Log.d(TAG, "Received Package Name : " + packageName);
         Cursor cursor = dbHelper.getPackageInfo(packageName);
         ArrayList<AppUsageFrequencyTableItem> list
                 = UsageApplication.getAppUsageFrequencyTableData(cursor);
 
+        LinearLayout llContainer = (LinearLayout) getActivity().findViewById(R.id.ll_single_app_usage_container);
         if(list.size() != 1) {
+            Snackbar.make(llContainer, "Entry not found in Database. Probably, this app has never been opened.", Snackbar.LENGTH_LONG)
+                    .setAction("Close", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getActivity().finish();
+                        }
+                    })
+                    .show();
             return;
         }
 
@@ -167,6 +191,7 @@ public class SingleAppUsageInfoFragment extends Fragment implements View.OnClick
 
         pieChart.getLegend().setPosition(Legend.LegendPosition.LEFT_OF_CHART);
 
+        getActivity().invalidateOptionsMenu();
     }
 
 
@@ -198,6 +223,7 @@ public class SingleAppUsageInfoFragment extends Fragment implements View.OnClick
         }
     }
 
+
     private void showInfoDialog(String text, String title) {
 
         new MaterialDialog.Builder(getActivity())
@@ -205,5 +231,55 @@ public class SingleAppUsageInfoFragment extends Fragment implements View.OnClick
                 .content(text)
                 .positiveText("Got it")
                 .show();
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        Log.d(TAG, "Menu prepared");
+
+        MenuItem item = menu.findItem(R.id.action_open_app);
+        try {
+            Drawable icon = getActivity().getPackageManager().getApplicationIcon(packageName);
+            item.setIcon(icon);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        Log.d(TAG, "Menu created");
+        inflater.inflate(R.menu.menu_single_app_usage_info, menu);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item.getItemId() == R.id.action_open_app) {
+            openAppSettings();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    private void openAppSettings() {
+
+        try {
+            //Open the specific App Info page:
+            Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            intent.setData(Uri.parse("package:" + packageName));
+            startActivity(intent);
+
+        } catch ( ActivityNotFoundException e ) {
+            e.printStackTrace();
+            //Open the generic Apps page:
+            Intent intent = new Intent(android.provider.Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS);
+            startActivity(intent);
+        }
     }
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigation_item_1"
+            android:checked="true"
+            android:title="App Usage"/>
+        <item
+            android:id="@+id/show_most_used_apps"
+            android:title="@string/open_most_used_apps"/>
+        <item
+            android:id="@+id/show_apps_not_used_in_a_while"
+            android:title="@string/open_futile_apps"/>
+
+        <item
+            android:id="@+id/show_memory_usage"
+            android:title="@string/open_memory_usage"/>
+
+    </group>
+</menu>

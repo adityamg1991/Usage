@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import com.example.aditya.usage.Fragment.MemoryUsageFragment;
 import com.example.aditya.usage.R;
 
-public class MemoryUsageActivity extends BaseActivity {
+public class MemoryUsageActivity extends ToolBarBaseActivity {
 
     private final String FRAG_TAG = "memory_usage_frag_tag";
 
@@ -18,11 +18,12 @@ public class MemoryUsageActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory_usage);
 
-        initActionBar(CODE_BACK_ENABLED, "Memory usage");
         FragmentManager managerFragment = getSupportFragmentManager();
         if(managerFragment.findFragmentByTag(FRAG_TAG) == null) {
             managerFragment.beginTransaction().
-                    add(android.R.id.content, new MemoryUsageFragment(), FRAG_TAG).commit();
+                    add(R.id.rl_container, new MemoryUsageFragment(), FRAG_TAG).commit();
         }
+
+        initialiseToolbar("Memory Usage");
     }
 }
