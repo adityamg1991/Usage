@@ -18,6 +18,9 @@ public class Constants {
 
     public static final ArrayList<String> PHONE_LAUNCHER_PACKAGE_LIST = new ArrayList<String>();
 
+    public static final String INTENT_KEY = "intent_key";
+    public static final String NOTIFICATION_FUTILE_APPS = "notification_futile_apps";
+
     static {
 
         PHONE_LAUNCHER_PACKAGE_LIST.add("com.android.systemui");

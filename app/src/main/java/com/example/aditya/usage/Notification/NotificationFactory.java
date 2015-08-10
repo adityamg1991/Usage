@@ -1,6 +1,5 @@
 package com.example.aditya.usage.Notification;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 
@@ -11,7 +10,7 @@ import com.example.aditya.usage.Data.NotificationData;
  */
 public class NotificationFactory {
 
-    public static final int TYPE_UNUSED_APP = 0;
+    public static final int TYPE_UNUSED_APPS = 0;
     private static NotificationFactory instance;
     private static NotificationManager managerNotification;
     private static Context mContext;
@@ -38,8 +37,8 @@ public class NotificationFactory {
 
         if (null != data) {
 
-            if(data.getNotificationType() == TYPE_UNUSED_APP) {
-                notification = new NotificationUnusedApp(data, mContext);
+            if(data.getNotificationType() == TYPE_UNUSED_APPS) {
+                notification = new NotificationUnusedApps(data, mContext);
             }
 
             showNotification(notification);
@@ -54,5 +53,11 @@ public class NotificationFactory {
         }
 
         managerNotification.notify(0, notification.getNotificationBuilder().build());
+    }
+
+
+    public void cancelAllNotification() {
+
+        managerNotification.cancelAll();
     }
 }

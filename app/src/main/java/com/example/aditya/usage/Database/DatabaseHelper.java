@@ -148,16 +148,16 @@ public class DatabaseHelper {
     }
 
 
-    public double getTotalPhoneUsageInSeconds() {
+    public long getTotalPhoneUsageInSeconds() {
 
-        double totalTime = 0;
+        long totalTime = 0;
 
         String strSelectApps = "SELECT * FROM " + AppUsageFrequencyTable.TABLE_NAME;
         log(strSelectApps);
 
         Cursor cursor = database.rawQuery(strSelectApps, null);
         for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
-            totalTime += cursor.getDouble(cursor.getColumnIndex(AppUsageFrequencyTable.TOTAL_TIME));
+            totalTime += cursor.getLong(cursor.getColumnIndex(AppUsageFrequencyTable.TOTAL_TIME));
         }
 
         return totalTime;
@@ -249,11 +249,6 @@ public class DatabaseHelper {
         String query = "SELECT * FROM " + AppUsageFrequencyTable.TABLE_NAME
                 + " ORDER BY " + AppUsageFrequencyTable.TOTAL_TIME + " DESC LIMIT 1";
         log(query);
-
-
-
-
-
 
         return list;
     }

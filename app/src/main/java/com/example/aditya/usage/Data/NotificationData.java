@@ -17,6 +17,10 @@ public class NotificationData {
         this.NotificationType = notificationType;
     }
 
+    public NotificationData(int notificationType) {
+        this(null, "", 0, notificationType);
+    }
+
     public String getPackageName() {
         return packageName;
     }

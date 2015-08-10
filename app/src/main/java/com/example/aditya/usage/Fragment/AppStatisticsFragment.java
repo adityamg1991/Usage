@@ -1,20 +1,17 @@
 package com.example.aditya.usage.Fragment;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.example.aditya.usage.Activity.SingleAppUsageInfoActivity;
 import com.example.aditya.usage.Data.AppUsageFrequencyTableItem;
 import com.example.aditya.usage.Database.DatabaseHelper;
 import com.example.aditya.usage.R;
-import com.example.aditya.usage.Utilities.Constants;
 import com.example.aditya.usage.Utilities.UsageApplication;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -35,6 +32,7 @@ import java.util.Map;
 public class AppStatisticsFragment extends UsageBaseFragment {
 
     private PieChart pieChart;
+    private TextView tvInfo;
     private DatabaseHelper dbHelper;
 
     public AppStatisticsFragment() {}
@@ -54,6 +52,7 @@ public class AppStatisticsFragment extends UsageBaseFragment {
         super.onActivityCreated(savedInstanceState);
 
         dbHelper = DatabaseHelper.getInstance(getActivity());
+        tvInfo = (TextView) getActivity().findViewById(R.id.tv_info_text);
         pieChart = (PieChart) getActivity().findViewById(R.id.pie_chart);
         populatePieChart();
 
@@ -222,6 +221,14 @@ public class AppStatisticsFragment extends UsageBaseFragment {
 
         pieChart.getLegend().setPosition(Legend.LegendPosition.LEFT_OF_CHART);
 
+        // Showing how much time user spent in apps
+        long totalPhoneUsage = dbHelper.getTotalPhoneUsageInSeconds();
+        if(0 == totalPhoneUsage) {
+            tvInfo.setText("No Data");
+        } else {
+            tvInfo.setText("Total time spent in all apps combined : " +
+                    UsageApplication.getFormattedUsageTime(totalPhoneUsage));
+        }
     }
 
 

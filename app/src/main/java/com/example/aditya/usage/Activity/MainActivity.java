@@ -28,35 +28,33 @@ import com.example.aditya.usage.Utilities.Constants;
 public class MainActivity extends ToolBarBaseActivity {
 
     private static final String TAG = "MainActivity";
+
     private FragmentManager managerFragment;
     private UsagePatternFragment mostUsedAppsFragment;
     private UsagePatternFragment futileAppsFragment;
     private MemoryUsageFragment memoryUsageFragment;
-
     private AppStatisticsFragment appStatisticsFragment;
+
+    private static final int POSITION_FUTILE_FRAGMENT = 2;
+
+    private NavigationView navigationView;
+
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        setUpAlarm();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         managerFragment = getSupportFragmentManager();
-
         appStatisticsFragment = AppStatisticsFragment.newInstance();
-
         mostUsedAppsFragment = new UsagePatternFragment();
-
         memoryUsageFragment = new MemoryUsageFragment();
-
         futileAppsFragment = new UsagePatternFragment();
+
         Bundle bundle = new Bundle();
         bundle.putString(Constants.KEY_SHOW_FUTILE_APPS, Constants.VALUE_SHOW_FUTILE_APPS);
         futileAppsFragment.setArguments(bundle);
-
         swapFragment(appStatisticsFragment);
 
         final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -78,7 +76,7 @@ public class MainActivity extends ToolBarBaseActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -86,7 +84,7 @@ public class MainActivity extends ToolBarBaseActivity {
                 drawerLayout.closeDrawers();
 
                 switch (menuItem.getItemId()) {
-                    case R.id.navigation_item_1 : {
+                    case R.id.navigation_item_1: {
                         swapFragment(appStatisticsFragment);
                         break;
                     }
@@ -94,11 +92,11 @@ public class MainActivity extends ToolBarBaseActivity {
                         swapFragment(mostUsedAppsFragment);
                         break;
                     }
-                    case R.id.show_apps_not_used_in_a_while : {
+                    case R.id.show_apps_not_used_in_a_while: {
                         swapFragment(futileAppsFragment);
                         break;
                     }
-                    case R.id.show_memory_usage : {
+                    case R.id.show_memory_usage: {
                         swapFragment(memoryUsageFragment);
                         break;
                     }
@@ -107,6 +105,24 @@ public class MainActivity extends ToolBarBaseActivity {
                 return false;
             }
         });
+
+        setUpAlarm();
+        checkIfFromNotification();
+    }
+
+
+    private void checkIfFromNotification() {
+
+        Intent intent = getIntent();
+        if(null != intent) {
+
+            if(intent.hasExtra(Constants.INTENT_KEY)) {
+                if(intent.getStringExtra(Constants.INTENT_KEY).equals(Constants.NOTIFICATION_FUTILE_APPS)) {
+                    swapFragment(futileAppsFragment);
+                    navigationView.getMenu().getItem(POSITION_FUTILE_FRAGMENT).setChecked(true);
+                }
+            }
+        }
     }
 
 
@@ -123,11 +139,9 @@ public class MainActivity extends ToolBarBaseActivity {
         } else {
             Log.d("Alaram", "Setting Alarm");
 
-
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                    System.currentTimeMillis(), AlarmManager.INTERVAL_DAY, alarmIntent);
         }
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis(), 60 * 1000, alarmIntent);
     }
 
 
