@@ -23,6 +23,7 @@ import com.coffeemug.usage.Fragment.AppStatisticsFragment;
 import com.coffeemug.usage.Fragment.MemoryUsageFragment;
 import com.coffeemug.usage.Fragment.UsageBaseFragment;
 import com.coffeemug.usage.Fragment.UsagePatternFragment;
+import com.coffeemug.usage.Notification.NotificationFactory;
 import com.coffeemug.usage.R;
 import com.coffeemug.usage.Receivers.CheckFutileAppsReceiver;
 import com.coffeemug.usage.Utilities.Constants;
@@ -31,7 +32,6 @@ import com.coffeemug.usage.Utilities.Constants;
 public class MainActivity extends ToolBarBaseActivity {
 
     private static final String TAG = "MainActivity";
-    private static final String PASSWORD = "iamafuckingpervert";
 
     private FragmentManager managerFragment;
     private UsagePatternFragment mostUsedAppsFragment;
@@ -112,6 +112,13 @@ public class MainActivity extends ToolBarBaseActivity {
 
         setUpAlarm();
         checkIfFromNotification();
+        cancelAnyPresentNotification();
+    }
+
+
+    private void cancelAnyPresentNotification() {
+
+        NotificationFactory.getInstance(this).cancelAllNotification();
     }
 
 

@@ -139,8 +139,6 @@ public class DatabaseHelper {
     }
 
 
-
-
     public void clearAppUsageTable() {
         String query = "DELETE FROM " + AppUsageFrequencyTable.TABLE_NAME;
         log(query);
