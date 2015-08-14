@@ -25,4 +25,5 @@
     <string name="closeDrawer">Close</string>
     <string name="rate_app">Rate app</string>
     <string name="open_memory_usage">Show memory usage</string>
+    <string name="couldnt_launch_market">Couldn\'t launch MarketPlace app</string>
 </resources>

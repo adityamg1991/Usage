@@ -1,67 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.aditya.usage"
-    android:installLocation="internalOnly" >
+<manifest package="com.coffeemug.usage"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          android:installLocation="internalOnly">
 
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
-        android:name=".Utilities.UsageApplication"
+        android:name="com.coffeemug.usage.Utilities.UsageApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.MainActivity"
             android:label="Usage"
-            android:theme="@style/NoActionBar" >
+            android:screenOrientation="portrait"
+            android:theme="@style/NoActionBar">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
-        <receiver android:name="com.example.aditya.usage.Receivers.RebootReceiver" >
+        <receiver android:name="com.coffeemug.usage.Receivers.RebootReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
             </intent-filter>
         </receiver>
 
-        <receiver android:name="com.example.aditya.usage.Receivers.ManageDataReceiver"></receiver>
+        <receiver android:name="com.coffeemug.usage.Receivers.ManageDataReceiver"></receiver>
 
-        <receiver android:name="com.example.aditya.usage.Receivers.CheckFutileAppsReceiver"></receiver>
+        <receiver android:name="com.coffeemug.usage.Receivers.CheckFutileAppsReceiver"></receiver>
 
         <service
-            android:name=".Service.ProcessDataUpdateService"
+            android:name="com.coffeemug.usage.Service.ProcessDataUpdateService"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
         </service>
         <service
-            android:name=".Service.CheckForegroundAppService"
+            android:name="com.coffeemug.usage.Service.CheckForegroundAppService"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
         </service>
 
         <activity
-            android:name=".Activity.AppUsagePatternActivity"
-            android:label="@string/title_activity_app_usage_pattern" >
+            android:name="com.coffeemug.usage.Activity.AppUsagePatternActivity"
+            android:label="@string/title_activity_app_usage_pattern"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".Activity.MemoryUsageActivity"
-            android:theme="@style/NoActionBar"
-            android:label="@string/title_activity_memory_usage" >
+            android:name="com.coffeemug.usage.Activity.MemoryUsageActivity"
+            android:label="@string/title_activity_memory_usage"
+            android:theme="@style/NoActionBar">
         </activity>
         <activity
-            android:name=".Activity.SingleAppUsageInfoActivity"
-            android:theme="@style/NoActionBar"
-            android:label="@string/title_activity_single_app_usage_info" >
+            android:name="com.coffeemug.usage.Activity.SingleAppUsageInfoActivity"
+            android:label="@string/title_activity_single_app_usage_info"
+            android:theme="@style/NoActionBar">
         </activity>
 
         <service
-            android:name=".Service.ManageDataIntentService"
-            android:exported="false" >
+            android:name="com.coffeemug.usage.Service.ManageDataIntentService"
+            android:exported="false">
         </service>
     </application>
 
